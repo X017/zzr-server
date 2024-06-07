@@ -8,8 +8,9 @@ import sqlite3
 
 app = Bottle()
 addrFile = 'files/'
-#sdb = sqlite3.connect('')
+userpw = 'users/'
 
+#sdb = sqlite3.connect('db')
 def randz(seed): #link randomizer
     rz = ''
     for i in range(seed):
@@ -30,19 +31,20 @@ def loginData():
     global password
     username = request.forms.get('username')
     password = request.forms.get('password')
-    return {username:password}
+    if username == 'admin' and password == '25df':
+        redirect('upload')
+    else:
+        return {'ERROR':"WRONG PASSWORD! TRY AGAIN"}
 
 @get('/raw/<fileName>')
 def rawGet(fileName):
     try:
-
-        if username == var_user:
-            if fileName in os.listdir('files'):
-                file = addrFile + fileName
-                with open(file,'r') as rf:
-                    return rf.read()
-            else:
-                return ''' <title> File Not Found!</title>
+        if fileName in os.listdir('files'):
+            file = addrFile + fileName
+            with open(file,'r') as rf:
+                return rf.read()
+        else:
+            return ''' <title> File Not Found!</title>
                        <p1>File Not Found 404!</p1>
             '''
     except NameError:
@@ -63,8 +65,14 @@ def fileDir():
 
 @get('/upload')
 def upload_page():
-    return '''
-        '''
+    try:
+        if username == 'admin' and password == '25df':
+            return template('upload.tpl')
+        else:
+            redirect('login')
+    except NameError:
+        redirect('login')
+
 
 @route('/upload',method='POST')
 def do_upload():
@@ -72,7 +80,8 @@ def do_upload():
             upload = request.files.get('upload')
             save_path = 'files'
             upload.save(save_path)
-            return 'File Uploaded!'
+            return "File Uploaded!"
+
         except IOError:
             return '''
                     <html> 
@@ -84,3 +93,4 @@ def do_upload():
 
 
 run(host='localhost',port=7000,reloader=True)
+
