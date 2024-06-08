@@ -8,17 +8,33 @@ import sqlite3
 
 app = Bottle()
 addrFile = 'files/'
-userpw = 'users/'
+userdir = 'users/'
 
 #sdb = sqlite3.connect('db')
-def randz(seed): #link randomizer
-    rz = ''
+def randz(seed): #link randomizer #yoink not anymore more like a token generator LOL :D
+    rz = '' 
     for i in range(seed):
         rz = rz + random.choice(string.ascii_letters)
     return rz
 
+def userHandler(name,mode): #tbh this is a shitty and good way to handle user data 
+    #idk anymore 
+    path = userdir+name+'.json'
+    if mode == 'r':
+        with open(path,mode) as f:
+            return f.read()
+    elif mode == 'w':
+        with open(path,mode) as f:
+            f.write()
+    else:
+        pass
+
+
+
+
 
 fileAddress = randz(5)
+
 
 
 @get('/login')
@@ -27,11 +43,12 @@ def loginGet():
 
 @post('/login')
 def loginData():
-    global username
-    global password
+    global username,password,data
     username = request.forms.get('username')
     password = request.forms.get('password')
-    if username == 'admin' and password == '25df':
+    data = json.loads(userHandler(username,r)) 
+
+    if username == data['name'] and password == data['password']:
         redirect('upload')
     else:
         return {'ERROR':"WRONG PASSWORD! TRY AGAIN"}
@@ -66,7 +83,7 @@ def fileDir():
 @get('/upload')
 def upload_page():
     try:
-        if username == 'admin' and password == '25df':
+        if username == data['name'] and password == data['password']:
             return template('upload.tpl')
         else:
             redirect('login')
