@@ -3,4 +3,13 @@
 i made this project for several reasons.
 
 <li>
+	bottle is easy to use and easy to learn micro framework so why not
+</li>
+
+<li>
+	i wanted to make more tools for my self in the fastest way possible 
+</li>
+
+<li>
+	and why not?
 </li>
