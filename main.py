@@ -1,3 +1,4 @@
+
 from bottle import *
 import os 
 import random 
@@ -17,7 +18,8 @@ def randz(seed): #link randomizer #yoink not anymore more like a token generator
         rz = rz + random.choice(string.ascii_letters)
     return rz
 
-def userHandler(name,mode): #tbh this is a shitty and good way to handle user data 
+
+def userHandler(name, mode): #tbh this is a shitty and good way to handle user data 
     #idk anymore 
     path = userdir+name+'.json'
     if mode == 'r':
@@ -28,9 +30,6 @@ def userHandler(name,mode): #tbh this is a shitty and good way to handle user da
             f.write()
     else:
         pass
-
-
-
 
 
 fileAddress = randz(5)
@@ -110,4 +109,3 @@ def do_upload():
 
 
 run(host='localhost',port=7000,reloader=True)
-
