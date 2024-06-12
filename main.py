@@ -1,52 +1,45 @@
+
 from bottle import *
 import os 
 import random 
 import string 
 import time 
 import json 
-import sqlite3
+import sqlite3 
 
 app = Bottle()
 addrFile = 'files/'
 userdir = 'users/'
 
-#sdb = sqlite3.connect('db')
-def randz(seed): #link randomizer #yoink not anymore more like a token generator LOL :D
-    rz = '' 
-    for i in range(seed):
-        rz = rz + random.choice(string.ascii_letters)
-    return rz
-
-def userHandler(name,mode): #tbh this is a shitty and good way to handle user data 
-    #idk anymore 
+def userHandler(name, mode): 
+    #tbh idk what to do anymore i just make it work.
     path = userdir+name+'.json'
-    if mode == 'r':
-        with open(path,mode) as f:
-            return f.read()
-    elif mode == 'w':
-        with open(path,mode) as f:
-            f.write()
-    else:
-        pass
-
-
-
-
-
-fileAddress = randz(5)
-
+    try:
+        if mode == 'r':
+            with open(path,mode) as f:
+                return f.read()
+        else:
+            pass
+    except FileNotFoundError:
+        redirect('login') 
 
 
 @get('/login')
 def loginGet():
     return template('login.tpl')
 
+@get('/')
+def indexGet():
+    redirect('/login')
+
+
 @post('/login')
 def loginData():
     global username,password,data
     username = request.forms.get('username')
     password = request.forms.get('password')
-    data = json.loads(userHandler(username,r)) 
+    data = json.loads(userHandler(username,'r')) 
+
 
     if username == data['name'] and password == data['password']:
         redirect('upload')
@@ -69,7 +62,7 @@ def rawGet(fileName):
 
 @get('/raw')
 def rawredirect():
-    redirect('/list')
+    redirect('list')
 
 
 @get('/list')
@@ -108,6 +101,6 @@ def do_upload():
     
 
 
-
+dbHandler()
 run(host='localhost',port=7000,reloader=True)
 
