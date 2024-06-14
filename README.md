@@ -13,3 +13,13 @@ i made this project for several reasons.
 <li>
 	and why not?
 </li>
+
+<h1> How To Run:
+<code> 
+pip3 install bottle
+
+git clone https://github.com/x017/zzr-server 
+cd zzr-server
+python3 main.py
+
+</code>

@@ -101,6 +101,5 @@ def do_upload():
     
 
 
-dbHandler()
 run(host='localhost',port=7000,reloader=True)
 
